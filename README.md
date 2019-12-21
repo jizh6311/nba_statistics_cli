@@ -16,3 +16,9 @@ Complete the installation of all packages, run:
 go install
 ```
 nba_statistics_cli will be available on your machine.
+
+## Run test
+Under tests folder, run
+```
+go test
+```
