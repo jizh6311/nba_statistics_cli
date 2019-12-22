@@ -1,11 +1,37 @@
 package handlersTest
 
 import (
+  "io/ioutil"
   "testing"
 
+  "github.com/jarcoal/httpmock"
   "github.com/jizh6311/nba_statistics_cli/handlers"
   "github.com/stretchr/testify/assert"
 )
+
+func TestGetHttpResponse(t *testing.T) {
+  httpmock.Activate()
+  defer httpmock.DeactivateAndReset()
+
+  httpmock.RegisterResponder("GET", `=~^https://data.nba.net/10s/prod/v1`,
+    httpmock.NewStringResponder(200, `{"id": 1, "name": "This is for testing"}`))
+
+  responseString := handlers.GetHttpResponse("https://data.nba.net/10s/prod/v1/20191222/scoreboard.json")
+
+  assert.Contains(t, responseString, "This is for testing", "The response string should match")
+  assert.Contains(t, responseString, "\"id\": 1", "The response string should match")
+}
+
+func TestGetStandingsFromJSON(t *testing.T) {
+  data, err := ioutil.ReadFile("./data/standings.json")
+  if err != nil {
+    t.Errorf("Cannot read file ./data/standings.json")
+  }
+  standings := handlers.GetStandingsFromJSON(string(data))
+
+  assert.Contains(t, standings, "bucks", "The standings do not contain bucks")
+  assert.Contains(t, standings, "lakers", "The standings do not contain lakers")
+}
 
 func TestGetAllScores(t *testing.T) {
   allScores := handlers.GetAllScores("20191220")
@@ -13,6 +39,5 @@ func TestGetAllScores(t *testing.T) {
 }
 
 func TestGetStandings(t *testing.T) {
-  standings := handlers.GetStandings("20191220")
-  assert.Contains(t, standings, "20191220", "The standing results should contain the date")
+  // TODO: Mock data for standings
 }

@@ -1,0 +1,20 @@
+{
+  "league": {
+    "standard": {
+      "conference": {
+        "east": [
+          {
+            "teamSitesOnly": {
+              "teamCode": "bucks"
+            }
+          },
+          {
+            "teamSitesOnly": {
+              "teamCode": "lakers"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

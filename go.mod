@@ -7,10 +7,12 @@ require (
 	github.com/fatih/gomodifytags v1.0.1 // indirect
 	github.com/fatih/structtag v1.2.0 // indirect
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // indirect
+	github.com/jarcoal/httpmock v1.0.4
 	github.com/mdempsky/gocode v0.0.0-20191202075140-939b4a677f2f // indirect
 	github.com/rogpeppe/godef v1.1.1 // indirect
 	github.com/sqs/goreturns v0.0.0-20181028201513-538ac6014518 // indirect
 	github.com/stretchr/testify v1.4.0
+	github.com/thedevsaddam/gojsonq v2.3.0+incompatible
 	github.com/tpng/gopkgs v0.0.0-20180428091733-81e90e22e204 // indirect
 	github.com/urfave/cli/v2 v2.0.0
 	github.com/zmb3/goaddimport v0.0.0-20170810013102-4ab94a07ab86 // indirect
