@@ -29,8 +29,8 @@ func TestGetStandingsFromJSON(t *testing.T) {
   }
   standings := handlers.GetStandingsFromJSON(string(data))
 
-  assert.Contains(t, standings, "bucks", "The standings do not contain bucks")
-  assert.Contains(t, standings, "lakers", "The standings do not contain lakers")
+  assert.ElementsMatch(t, standings[0], [3]string{"bucks", "10", "3"}, "The standings do not match bucks")
+  assert.ElementsMatch(t, standings[1], [3]string{"lakers", "11", "2"}, "The standings do not match lakers")
 }
 
 func TestGetAllScores(t *testing.T) {

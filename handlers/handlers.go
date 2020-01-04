@@ -5,8 +5,9 @@ import (
   "io/ioutil"
   "log"
   "net/http"
-  "strings"
+  "os"
 
+  "github.com/olekukonko/tablewriter"
   "github.com/thedevsaddam/gojsonq"
 )
 
@@ -28,13 +29,22 @@ func GetHttpResponse(url string) string {
   return responseString
 }
 
-func GetStandingsFromJSON(json string) []string {
+func GetStandingsFromJSON(json string) [][]string {
   eastStandingsList := gojsonq.New().FromString(json).From("league.standard.conference.east")
-  var eastTeamList []string
+  var eastTeamList [][]string
   for i := 1; i <= eastStandingsList.Count(); i++ {
+    var teamArr []string
     teamMap1 := eastStandingsList.Nth(i).(map[string]interface{})
-    teamMap2 := teamMap1["teamSitesOnly"].(map[string]interface{})
-    eastTeamList = append(eastTeamList, teamMap2["teamCode"].(string))
+    teamSitesOnly := teamMap1["teamSitesOnly"].(map[string]interface{})
+
+    teamArr = append(
+      teamArr,
+      teamSitesOnly["teamCode"].(string),
+      teamMap1["win"].(string),
+      teamMap1["loss"].(string),
+    )
+
+    eastTeamList = append(eastTeamList, teamArr)
   }
 
   return eastTeamList
@@ -44,8 +54,16 @@ func GetAllScores(date string) string {
   return fmt.Sprintf("The scoreborad on %s is coming. Thanks for your patience.", date)
 }
 
-func GetStandings(date string) string {
+func GetStandings(date string) *tablewriter.Table {
   standingsResponse := GetHttpResponse("https://data.nba.net/10s/prod/v1/current/standings_conference.json")
   standingsList := GetStandingsFromJSON(standingsResponse)
-  return fmt.Sprintf(strings.Join(standingsList, ","))
+
+  table := tablewriter.NewWriter(os.Stdout)
+  table.SetHeader([]string{"Team", "Win", "Loss"})
+
+  for _, teamInfo := range standingsList {
+    table.Append(teamInfo)
+  }
+
+  return table
 }

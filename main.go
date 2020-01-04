@@ -5,6 +5,7 @@ import (
   "log"
   "os"
   "sort"
+
   "github.com/jizh6311/nba_statistics_cli/handlers"
   "github.com/urfave/cli/v2"
 )
@@ -20,7 +21,8 @@ func main() {
       Name:  "score-board",
       Usage: "Get today's scoreboard",
       Action: func(c *cli.Context) error {
-      fmt.Printf(handlers.GetAllScores("20191220"))
+        fmt.Printf(handlers.GetAllScores("20191220"))
+
         return nil
       },
     },
@@ -28,7 +30,9 @@ func main() {
       Name:  "standings",
       Usage: "Get current standings",
       Action: func(c *cli.Context) error {
-      fmt.Printf(handlers.GetStandings("20191220"))
+        standingTable := handlers.GetStandings("20191220")
+        standingTable.Render()
+
         return nil
       },
     },
@@ -37,7 +41,7 @@ func main() {
   sort.Sort(cli.CommandsByName(app.Commands))
 
   err := app.Run(os.Args)
-    if err != nil {
-      log.Fatal(err)
-    }
+  if err != nil {
+    log.Fatal(err)
+  }
 }
